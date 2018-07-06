@@ -1,0 +1,2 @@
+debian/bin/bfxcoind usr/bin
+src/bfxcoind usr/lib/bfxcoin

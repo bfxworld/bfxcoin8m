@@ -1,0 +1,47 @@
+# Maintainer: Sylvain "Magicking" Laurent <sylvain@bfxcoin.org>
+
+pkgbase=bfxcoin
+pkgname=('bfxcoin-daemon-git' 'bfxcoin-qt-git')
+pkgver=0.8.0
+pkgrel=1
+arch=('i686' 'x86_64')
+url="http://www.bfxcoin.org/"
+makedepends=('boost' 'miniupnpc' 'git' 'openssl')
+license=('MIT')
+provides=(${pkgname%-*}=$pkgver)
+source=($pkgbase::git+https://github.com/althousedev/$pkgbase.git
+      bfxcoind.service
+      bfxcoin-qt.install)
+sha256sums=('SKIP'
+            '8b0dba4e5bf5dcebc8a13f273c950adb0f26b5a40c1fb5998e04f48335be19b6'
+            'ebf7090ca1202e2c2ccd1aa5bb03e6ac911c458141a1cedda9b41f9c26c2602c')
+
+build() {
+  cd "$srcdir/$pkgbase/src"
+
+  ../contrib/build-versioning/generate-build-version.sh build.h # Tag binaries
+
+  PIE=1 CPPFLAGS_HEADLESS="-z noexecstack" make -f Makefile.unix bfxcoind
+  PIE=1 CPPFLAGS_HEADLESS="-z noexecstack" make -f Makefile.unix bfxcoin-qt
+}
+
+package_bfxcoin-daemon-git() {
+  pkgdesc="Bfxcoin is a peer-to-peer network PoS based digital currency - daemon"
+  depends=(boost-libs miniupnpc openssl)
+  conflicts=(${pkgname%-*})-daemon
+
+  cd "$srcdir/$pkgbase"
+
+  install -Dm644 ../bfxcoind.service "$pkgdir"/usr/lib/systemd/user/bfxcoind.service
+  install -Dm755 src/bfxcoind "$pkgdir"/usr/bin/bfxcoind
+}
+
+package_bfxcoin-qt-git() {
+  pkgdesc="Bfxcoin is a peer-to-peer network PoS based digital currency - Qt"
+  depends=(boost-libs qt5-base miniupnpc qrencode openssl)
+  install=bfxcoin-qt.install
+  conflicts=(${pkgname%-*})-qt
+
+  cd "$srcdir/$pkgbase"
+  install -Dm755 src/bfxcoin-qt "$pkgdir"/usr/bin/bfxcoin-qt
+}

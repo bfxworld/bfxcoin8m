@@ -1,0 +1,6 @@
+debian/bin/bfxcoin-qt usr/bin
+src/bfxcoin-qt usr/lib/bfxcoin
+share/pixmaps/bfxcoin32.xpm usr/share/pixmaps
+share/pixmaps/bfxcoin80.xpm usr/share/pixmaps
+debian/bfxcoin-qt.desktop usr/share/applications
+debian/bfxcoin-qt.protocol usr/share/kde4/services/

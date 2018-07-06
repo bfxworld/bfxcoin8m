@@ -1,0 +1,33 @@
+#!/usr/bin/make -f
+# -*- mode: makefile; coding: utf-8 -*-
+
+#DEB_MAKE_CHECK_TARGET = test_bfxcoin
+#build/bfxcoind::
+#	$(if $(filter nocheck,$(DEB_BUILD_OPTIONS)),,src/test_bfxcoin)
+
+DEB_INSTALL_EXAMPLES_bfxcoind += debian/examples/*
+DEB_INSTALL_MANPAGES_bfxcoind += debian/manpages/*
+
+%:
+	dh $@
+
+override_dh_auto_build:
+	cd share; ./gengraphics.sh svg/bfxcoin_ico.svg
+	cd src; $(MAKE) -f Makefile.unix bfxcoind
+	cd src; $(MAKE) -f Makefile.unix bfxcoin-qt
+
+override_dh_auto_clean:
+	cd src; $(MAKE) -f Makefile.unix clean
+
+#override_dh_auto_configure:
+#	qmake bfxcoin-qt.pro USE_QRCODE=1
+
+override_dh_auto_test:
+#	cd src; $(MAKE) -f makefile.unix test_bfxcoin
+#	src/test_bfxcoin
+
+# Ensure wrapper is set executable
+binary-post-install/bfxcoind:
+	chmod +x $(cdbs_curdestdir)usr/bin/bfxcoind
+binary-post-install/bfxcoin-qt:
+	chmod +x $(cdbs_curdestdir)usr/bin/bfxcoin-qt

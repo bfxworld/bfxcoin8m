@@ -1,0 +1,9 @@
+[Unit]
+Description=Bfxcoin daemon
+After=network.target
+
+[Service]
+ExecStart=bfxcoind -logtimestamps
+
+[Install]
+WantedBy=default.target

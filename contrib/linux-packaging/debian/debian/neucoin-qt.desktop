@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=BFXCoin
+Comment=BFXCoin P2P Cryptocurrency
+Comment[fr]=BFXCoin, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=BFXCoin, eşten eşe kriptografik sanal para birimi
+Exec=/usr/bin/bfxcoin-qt
+Terminal=false
+Type=Application
+Icon=/usr/share/pixmaps/bfxcoin80.xpm
+MimeType=x-scheme-handler/bfxcoin;
+Categories=Office;
